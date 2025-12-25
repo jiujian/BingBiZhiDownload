@@ -29,7 +29,7 @@ jobs:
         
     - name: Build executable
       run: |
-        pyinstaller --onefile --windowed --name "BingBiZhiDownload" --icon=NONE main.py
+        pyinstaller main.spec
         
     - name: Create release archive
       run: |
@@ -74,4 +74,3 @@ jobs:
           详细使用说明请查看 README.md
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-

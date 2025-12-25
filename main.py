@@ -80,6 +80,7 @@ class BingWallpaperDownloader:
         self.recent_days = tk.StringVar(value="7")
         ttk.Entry(date_frame, textvariable=self.recent_days, width=10).grid(row=0, column=1, sticky=tk.W, padx=5)
         ttk.Label(date_frame, text="天的壁纸").grid(row=0, column=2, sticky=tk.W)
+        ttk.Label(date_frame, text="注意：只能下载最近7天的壁纸", foreground="red").grid(row=0, column=3, sticky=tk.W, padx=10)
         
         ttk.Radiobutton(date_frame, text="指定单日", variable=self.date_mode, 
                        value="single", command=self.on_date_mode_change).grid(row=1, column=0, sticky=tk.W, padx=5)
@@ -104,8 +105,9 @@ class BingWallpaperDownloader:
         # 输出目录
         ttk.Label(options_frame, text="输出目录:").grid(row=0, column=0, sticky=tk.W, pady=5)
         self.output_path = tk.StringVar(value=os.path.join(os.getcwd(), "downloads"))
-        ttk.Entry(options_frame, textvariable=self.output_path, width=50).grid(row=0, column=1, sticky=(tk.W, tk.E), padx=5)
-        ttk.Button(options_frame, text="浏览", command=self.browse_output_path).grid(row=0, column=2, padx=5)
+        ttk.Entry(options_frame, textvariable=self.output_path, width=35).grid(row=0, column=1, sticky=(tk.W, tk.E), padx=5)
+        ttk.Button(options_frame, text="选择", command=self.browse_output_path).grid(row=0, column=2, padx=5)
+        ttk.Button(options_frame, text="打开", command=self.open_output_path).grid(row=0, column=3, padx=5)
         
         # 线程数
         ttk.Label(options_frame, text="线程数:").grid(row=1, column=0, sticky=tk.W, pady=5)
@@ -169,6 +171,15 @@ class BingWallpaperDownloader:
         if path:
             self.output_path.set(path)
             self.log(f"输出目录已更改为: {path}")
+    
+    def open_output_path(self):
+        """打开输出目录"""
+        path = self.output_path.get()
+        if os.path.exists(path):
+            os.startfile(path)
+            self.log(f"已打开目录: {path}")
+        else:
+            messagebox.showwarning("警告", f"目录不存在: {path}")
     
     def log(self, message):
         """添加日志消息"""
@@ -500,4 +511,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
